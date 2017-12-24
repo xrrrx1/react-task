@@ -3,6 +3,7 @@ import {render, findDOMNode} from 'react-dom'
 import PropTypes from 'prop-types'
 import Header from "./Header";
 import Todo from "./Todo";
+import Form from "./Form";
 
 class App extends Component {
     static propTypes = {
@@ -22,7 +23,9 @@ class App extends Component {
         const {title, completed} = this.props;
         return (
             <main>
+
                 <Header title={title}/>
+
                 <section className="todo-list">
                     {this.state.todos.map(todo => <Todo
                         key={todo.id}
@@ -32,6 +35,8 @@ class App extends Component {
                         onStatusChange={this.handleStatusChange}
                         onDelete={this.handleDelete}/>)}
                 </section>
+
+                <Form onAdd={this.handleAdd}/>
             </main>
         )
     }
@@ -58,6 +63,26 @@ class App extends Component {
             todos
         });
 
+    };
+
+    handleAdd = (title) => {
+        let todo = {
+            id: this.nextId(),
+            title,
+            completed: false
+        };
+
+        let todos = [...this.state.todos, todo];
+
+        this.setState({
+            todos
+        });
+
+    };
+
+    nextId = () => {
+        this._nextId = this._nextId || 4;
+        return this._nextId++;
     };
 }
 

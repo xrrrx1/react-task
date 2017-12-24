@@ -6,15 +6,19 @@ class Button extends Component {
     static propTypes = {
         icon: PropTypes.string,
         className: PropTypes.string,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        children: PropTypes.node
     };
 
     render() {
-        const {icon, className, onClick} = this.props;
+        const {icon, className, onClick, children} = this.props;
 
         return (
-            <button className={className} onClick={onClick}>
-                <i className={'material-icons'}>{icon}</i>
+            <button className={className} onClick={onClick} {...this.props}>
+                {
+                    icon ? <i className={'material-icons'}>{icon}</i> :
+                        children
+                }
             </button>
         )
     }
