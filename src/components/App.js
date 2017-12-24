@@ -33,7 +33,8 @@ class App extends Component {
                         title={todo.title}
                         completed={todo.completed}
                         onStatusChange={this.handleStatusChange}
-                        onDelete={this.handleDelete}/>)}
+                        onDelete={this.handleDelete}
+                        onEdit={this.handleEdit}/>)}
                 </section>
 
                 <Form onAdd={this.handleAdd}/>
@@ -83,6 +84,21 @@ class App extends Component {
     nextId = () => {
         this._nextId = this._nextId || 4;
         return this._nextId++;
+    };
+
+    handleEdit = (id, title) => {
+        let todos = this.state.todos.map(todo => {
+            if (todo.id === id) {
+                todo.title = title;
+            }
+
+            return todo;
+        });
+
+        this.setState({
+            todos
+        });
+
     };
 }
 

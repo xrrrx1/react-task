@@ -25,7 +25,7 @@ class Form extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let title = this.state.title;
+        const {title} = this.state;
 
         if (title) {
             this.props.onAdd(title);

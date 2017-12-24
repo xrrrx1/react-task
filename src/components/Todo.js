@@ -9,24 +9,58 @@ class Todo extends Component {
         title: PropTypes.string.isRequired,
         completed: PropTypes.bool.isRequired,
         onStatusChange: PropTypes.func.isRequired,
-        onDelete: PropTypes.func.isRequired
+        onDelete: PropTypes.func.isRequired,
+        id: PropTypes.number.isRequired,
+        onEdit: PropTypes.func.isRequired
+    };
+
+    state = {
+        editing: false
     };
 
     render() {
         const {title, completed, onStatusChange, id, onDelete} = this.props;
 
-        return (
-            <div className={`todo${completed ? ' completed' : ''}`}>
+        if (this.state.editing) {
+            return (
+                <Fragment>
+                    <form className={"todo-edit-form"} onSubmit={this.handleSubmit}>
+                        <input type={"text"} ref={'title'} defaultValue={title}/>
+                        <Button className={'save icon'} icon={'save'} type={'submit'}/>
+                    </form>
+                </Fragment>
+            )
+        } else {
+            return (
+                <Fragment>
+                    <div className={`todo${completed ? ' completed' : ''}`}>
 
-                <Checkbox checked={completed} onChange={() => onStatusChange(id)}/>
+                        <Checkbox checked={completed} onChange={() => onStatusChange(id)}/>
 
-                <span className={"todo-title"}>{title}</span>
+                        <span className={"todo-title"}>{title}</span>
 
-                <Button className={"delete icon"} icon={'delete'} onClick={() => onDelete(id)}/>
+                        <Button className={"edit icon"} icon={'edit'} onClick={() =>
+                        this.setState({editing: true})} />
 
-            </div>
-        )
+                        <Button className={"delete icon"} icon={'delete'} onClick={() => onDelete(id)} />
+
+                    </div>
+                </Fragment>
+            )
+        }
     }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let title = this.refs.title.value;
+
+        this.props.onEdit(this.props.id, title);
+
+        this.setState({
+            editing:false
+        });
+
+    };
 }
 
 export default Todo
